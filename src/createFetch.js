@@ -9,12 +9,12 @@
 
 /* @flow */
 
-type Fetch = (url: string, options: ?any) => Promise<any>;
+type Fetch = (url: string, options: ?any) => Promise<any>
 
 type Options = {
   baseUrl: string,
   cookie?: string,
-};
+}
 
 /**
  * Creates a wrapper function around the HTML5 Fetch API that provides
@@ -33,7 +33,7 @@ function createFetch(fetch: Fetch, { baseUrl, cookie }: Options) {
       'Content-Type': 'application/json',
       ...(cookie ? { Cookie: cookie } : null),
     },
-  };
+  }
 
   return (url: string, options: any) =>
     url.startsWith('/graphql') || url.startsWith('/api')
@@ -45,7 +45,7 @@ function createFetch(fetch: Fetch, { baseUrl, cookie }: Options) {
             ...(options && options.headers),
           },
         })
-      : fetch(url, options);
+      : fetch(url, options)
 }
 
-export default createFetch;
+export default createFetch

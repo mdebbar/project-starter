@@ -7,30 +7,30 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import path from 'path';
-import webpack from 'webpack';
-import AssetsPlugin from 'assets-webpack-plugin';
-import nodeExternals from 'webpack-node-externals';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import overrideRules from './lib/overrideRules';
-import pkg from '../package.json';
+import path from 'path'
+import webpack from 'webpack'
+import AssetsPlugin from 'assets-webpack-plugin'
+import nodeExternals from 'webpack-node-externals'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import overrideRules from './lib/overrideRules'
+import pkg from '../package.json'
 
-const isDebug = !process.argv.includes('--release');
-const isVerbose = process.argv.includes('--verbose');
+const isDebug = !process.argv.includes('--release')
+const isVerbose = process.argv.includes('--verbose')
 const isAnalyze =
-  process.argv.includes('--analyze') || process.argv.includes('--analyse');
+  process.argv.includes('--analyze') || process.argv.includes('--analyse')
 
-const reScript = /\.(js|jsx|mjs)$/;
-const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
-const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/;
+const reScript = /\.(js|jsx|mjs)$/
+const reStyle = /\.(css|less|styl|scss|sass|sss)$/
+const reImage = /\.(bmp|gif|jpg|jpeg|png|svg)$/
 const staticAssetName = isDebug
   ? '[path][name].[ext]?[hash:8]'
-  : '[hash:8].[ext]';
+  : '[hash:8].[ext]'
 
 // CSS Nano options http://cssnano.co/
 const minimizeCssOptions = {
   discardComments: { removeAll: true },
-};
+}
 
 //
 // Common configuration chunk to be used for both
@@ -282,7 +282,7 @@ const config = {
   // Choose a developer tool to enhance debugging
   // https://webpack.js.org/configuration/devtool/#devtool
   devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
-};
+}
 
 //
 // Configuration for the client-side bundle (client.js)
@@ -363,7 +363,7 @@ const clientConfig = {
     net: 'empty',
     tls: 'empty',
   },
-};
+}
 
 //
 // Configuration for the server-side bundle (server.js)
@@ -420,7 +420,7 @@ const serverConfig = {
                     ],
             ),
           },
-        };
+        }
       }
 
       // Override paths to static assets
@@ -436,10 +436,10 @@ const serverConfig = {
             name: `public/assets/${rule.options.name}`,
             publicPath: url => url.replace(/^public/, ''),
           },
-        };
+        }
       }
 
-      return rule;
+      return rule
     }),
   },
 
@@ -478,6 +478,6 @@ const serverConfig = {
     __filename: false,
     __dirname: false,
   },
-};
+}
 
-export default [clientConfig, serverConfig];
+export default [clientConfig, serverConfig]

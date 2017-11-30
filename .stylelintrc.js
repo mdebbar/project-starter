@@ -1,3 +1,4 @@
+/* eslint-env node */
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -58,4 +59,4 @@ module.exports = {
     // https://github.com/hudochenkov/stylelint-order/blob/master/rules/properties-order/README.md
     'order/properties-order': [],
   },
-};
+}

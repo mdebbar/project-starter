@@ -1,3 +1,4 @@
+/* eslint-env node */
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -99,4 +100,4 @@ module.exports = {
   // unmockedModulePathPatterns: // [array<string>]
 
   verbose: true, // [boolean]
-};
+}
