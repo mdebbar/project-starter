@@ -1,3 +1,4 @@
+/* eslint-env node */
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -24,4 +25,4 @@ module.exports = {
     '@babel/preset-react',
   ],
   ignore: ['node_modules', 'build'],
-};
+}

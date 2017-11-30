@@ -1,3 +1,4 @@
+/* eslint-env node */
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -13,28 +14,46 @@ module.exports = {
   parser: 'babel-eslint',
 
   extends: [
-    'airbnb',
+    'eslint:recommended',
+    'plugin:react/recommended',
     'plugin:flowtype/recommended',
     'plugin:css-modules/recommended',
+
+    'plugin:import/errors',
+    'plugin:import/warnings',
     'prettier',
     'prettier/flowtype',
     'prettier/react',
   ],
 
-  plugins: ['flowtype', 'css-modules', 'prettier'],
+  plugins: ['flowtype', 'full-import', 'css-modules', 'jsx-a11y', 'prettier'],
 
   globals: {
     __DEV__: true,
+    process: true,
   },
 
   env: {
     browser: true,
+    es6: true,
   },
 
   rules: {
     // Forbid the use of extraneous packages
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
     'import/no-extraneous-dependencies': ['error', { packageDir: '.' }],
+
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+      },
+    ],
+
+    'full-import/no-full-import': [
+      'error',
+      ['lodash', 'material-ui', 'aws-sdk', 'material-ui-icons'],
+    ],
 
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead
@@ -78,7 +97,7 @@ module.exports = {
 
     // Allow .js files to use JSX syntax
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': 'off',
 
     // Functional and class components are equivalent from React’s point of view
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
@@ -98,4 +117,4 @@ module.exports = {
       },
     },
   },
-};
+}

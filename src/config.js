@@ -1,3 +1,4 @@
+/* eslint-env node */
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -7,12 +8,8 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-/* eslint-disable max-len */
-
 if (process.env.BROWSER) {
-  throw new Error(
-    'Do not import `config.js` from inside the client-side code.',
-  );
+  throw new Error('Do not import `config.js` from inside the client-side code.')
 }
 
 module.exports = {
@@ -65,4 +62,4 @@ module.exports = {
         'KTZ6cxoKnEakQCeSpZlaUCJWGAlTEBJj0y2EMkUBujA7zWSvaQ',
     },
   },
-};
+}
