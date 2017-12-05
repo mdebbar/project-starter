@@ -43,13 +43,23 @@ module.exports = {
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
     'import/no-extraneous-dependencies': ['error', { packageDir: '.' }],
 
+    // Impose a convention for ordering the imports.
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling'],
+          'index',
+        ],
       },
     ],
 
+    // Prevent fully importing large libraries.
+    // https://github.com/mdebbar/eslint-plugin-full-import/blob/master/docs/rules/no-full-import.md
     'full-import/no-full-import': [
       'error',
       ['lodash', 'material-ui', 'aws-sdk', 'material-ui-icons'],

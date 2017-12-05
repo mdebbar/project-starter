@@ -8,5 +8,16 @@
   "[css]": {
     "editor.formatOnSave": true
   },
-  "editor.rulers": [80]
+  "editor.rulers": [80],
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/build": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/build": true
+  }
 }
