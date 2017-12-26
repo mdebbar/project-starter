@@ -13,7 +13,7 @@ import AssetsPlugin from 'assets-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import overrideRules from './lib/overrideRules'
-import pkg from '../package.json'
+import { createBabelConfig } from './babel.config'
 
 const isDebug = !process.argv.includes('--release')
 const isVerbose = process.argv.includes('--verbose')
@@ -78,42 +78,8 @@ const config = {
 
           // https://babeljs.io/docs/usage/options/
           babelrc: false,
-          presets: [
-            // A Babel preset that can automatically determine the Babel plugins and polyfills
-            // https://github.com/babel/babel-preset-env
-            [
-              '@babel/preset-env',
-              {
-                targets: {
-                  browsers: pkg.browserslist,
-                  forceAllTransforms: !isDebug, // for UglifyJS
-                },
-                modules: false,
-                useBuiltIns: false,
-                debug: false,
-              },
-            ],
-            // Experimental ECMAScript proposals
-            // https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-
-            '@babel/preset-stage-2',
-            // Flow
-            // https://github.com/babel/babel/tree/master/packages/babel-preset-flow
-            '@babel/preset-flow',
-            // JSX
-            // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-            ['@babel/preset-react', { development: isDebug }],
-          ],
-          plugins: [
-            // Treat React JSX elements as value types and hoist them to the highest scope
-            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
-            ...(isDebug ? [] : ['@babel/transform-react-constant-elements']),
-            // Replaces the React.createElement function with one that is more optimized for production
-            // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-inline-elements
-            ...(isDebug ? [] : ['@babel/transform-react-inline-elements']),
-            // Remove unnecessary React propTypes from the production build
-            // https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types
-            ...(isDebug ? [] : ['transform-react-remove-prop-types']),
-          ],
+
+          // Babel options are provided below in `clientConfig` and `serverConfig`.
         },
       },
 
@@ -298,6 +264,24 @@ const clientConfig = {
     client: ['@babel/polyfill', './src/client.js'],
   },
 
+  module: {
+    ...config.module,
+
+    rules: overrideRules(config.module.rules, rule => {
+      // Provide babel config for the client bundle.
+      if (rule.loader === 'babel-loader') {
+        return {
+          ...rule,
+          options: {
+            ...rule.options,
+            ...createBabelConfig('web', isDebug),
+          },
+        }
+      }
+      return rule
+    }),
+  },
+
   plugins: [
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
@@ -397,28 +381,13 @@ const serverConfig = {
     ...config.module,
 
     rules: overrideRules(config.module.rules, rule => {
-      // Override babel-preset-env configuration for Node.js
+      // Provide babel config for the server bundle.
       if (rule.loader === 'babel-loader') {
         return {
           ...rule,
           options: {
             ...rule.options,
-            presets: rule.options.presets.map(
-              preset =>
-                preset[0] !== '@babel/preset-env'
-                  ? preset
-                  : [
-                      '@babel/preset-env',
-                      {
-                        targets: {
-                          node: pkg.engines.node.match(/(\d+\.?)+/)[0],
-                        },
-                        modules: false,
-                        useBuiltIns: false,
-                        debug: false,
-                      },
-                    ],
-            ),
+            ...createBabelConfig('node', isDebug),
           },
         }
       }
@@ -438,7 +407,6 @@ const serverConfig = {
           },
         }
       }
-
       return rule
     }),
   },

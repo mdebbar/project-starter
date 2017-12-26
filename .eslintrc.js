@@ -17,16 +17,16 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:flowtype/recommended',
-    'plugin:css-modules/recommended',
 
     'plugin:import/errors',
     'plugin:import/warnings',
+
     'prettier',
     'prettier/flowtype',
     'prettier/react',
   ],
 
-  plugins: ['flowtype', 'full-import', 'css-modules', 'jsx-a11y', 'prettier'],
+  plugins: ['flowtype', 'full-import', 'jsx-a11y', 'prettier', 'react'],
 
   globals: {
     __DEV__: true,
@@ -62,18 +62,16 @@ module.exports = {
     // https://github.com/mdebbar/eslint-plugin-full-import/blob/master/docs/rules/no-full-import.md
     'full-import/no-full-import': [
       'error',
-      ['lodash', 'material-ui', 'aws-sdk', 'material-ui-icons'],
+      ['aws-sdk', 'lodash', 'material-ui', 'material-ui-icons'],
     ],
 
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead
     // https://eslint.org/docs/rules/no-console
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error', 'info'],
-      },
-    ],
+    'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
+
+    // https://eslint.org/docs/rules/prefer-const
+    'prefer-const': 'error',
 
     // Prefer destructuring from arrays and objects
     // http://eslint.org/docs/rules/prefer-destructuring
@@ -105,9 +103,14 @@ module.exports = {
       },
     ],
 
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md
+    'react/jsx-boolean-value': ['error', 'never'],
+
     // Allow .js files to use JSX syntax
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
     'react/jsx-filename-extension': 'off',
+
+    'react/jsx-no-bind': ['warn', { allowArrowFunctions: true }],
 
     // Functional and class components are equivalent from React’s point of view
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md

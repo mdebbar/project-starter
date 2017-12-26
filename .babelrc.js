@@ -8,21 +8,6 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-// Babel configuration
-// https://babeljs.io/docs/usage/api/
-module.exports = {
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        targets: {
-          node: 'current',
-        },
-      },
-    ],
-    '@babel/preset-stage-2',
-    '@babel/preset-flow',
-    '@babel/preset-react',
-  ],
-  ignore: ['node_modules', 'build'],
-}
+const { createBabelConfig } = require('./tools/babel.config')
+
+module.exports = createBabelConfig('cli', true)
