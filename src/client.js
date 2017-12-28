@@ -10,6 +10,7 @@
 import 'whatwg-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { hydrate as emotionHydrate } from 'react-emotion'
 import deepForceUpdate from 'react-deep-force-update'
 import queryString from 'query-string'
 import { createPath } from 'history/PathUtils'
@@ -18,6 +19,8 @@ import createFetch from './createFetch'
 import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
+
+emotionHydrate(window.App.emotionIds)
 
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
