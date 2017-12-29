@@ -12,6 +12,7 @@ import webpack from 'webpack'
 import AssetsPlugin from 'assets-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import DashboardPlugin from 'webpack-dashboard/plugin'
 import overrideRules from './lib/overrideRules'
 import { createBabelConfig } from './babel.config'
 
@@ -307,7 +308,10 @@ const clientConfig = {
     }),
 
     ...(isDebug
-      ? []
+      ? [
+          // https://github.com/FormidableLabs/electron-webpack-dashboard
+          new DashboardPlugin(),
+        ]
       : [
           // Decrease script evaluation time
           // https://github.com/webpack/webpack/blob/master/examples/scope-hoisting/README.md
