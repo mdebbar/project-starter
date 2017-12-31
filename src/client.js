@@ -21,7 +21,7 @@ import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
 
-emotionHydrate(window.App.emotionIds)
+emotionHydrate(window.App.__EMOTION_IDS__)
 
 const customFetch = createFetch(fetch, { baseUrl: window.App.apiUrl })
 
@@ -29,7 +29,10 @@ const customFetch = createFetch(fetch, { baseUrl: window.App.apiUrl })
 // https://facebook.github.io/react/docs/context.html
 const context = {
   // Apollo client instance.
-  client: createApolloClient({ fetch: customFetch }),
+  client: createApolloClient({
+    fetch: customFetch,
+    rehydration: window.App.__APOLLO_STATE__,
+  }),
   // Enables critical path CSS rendering
   // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: (...styles) => {

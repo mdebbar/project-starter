@@ -11,7 +11,7 @@ import React from 'react'
 import Layout from 'components/Layout'
 import Home from './Home'
 
-async function action() {
+function action() {
   return {
     chunks: ['home'],
     title: 'React Starter Kit',

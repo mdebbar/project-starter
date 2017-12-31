@@ -20,6 +20,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/server'
 import * as EmotionServer from 'emotion-server'
 import PrettyError from 'pretty-error'
+import { renderToStringWithData } from 'react-apollo'
 import createApolloClient from './apollo/createClient'
 import App from './components/App'
 import Html from './components/Html'
@@ -122,11 +123,13 @@ app.get('*', async (req, res, next) => {
       cookie: req.headers.cookie,
     })
 
+    const client = createApolloClient({ ssrMode: true, fetch: customFetch })
+
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
       // Apollo client instance.
-      client: createApolloClient({ fetch: customFetch }),
+      client,
       // Enables critical path CSS rendering
       // https://github.com/kriasoft/isomorphic-style-loader
       insertCss: (...styles) => {
@@ -148,9 +151,16 @@ app.get('*', async (req, res, next) => {
       return
     }
 
-    const emotionResult = EmotionServer.extractCritical(
-      ReactDOM.renderToString(<App context={context}>{route.component}</App>),
+    // SSR for Apollo Client
+    // https://www.apollographql.com/docs/react/recipes/server-side-rendering.html
+    const content = await renderToStringWithData(
+      <App context={context}>{route.component}</App>,
     )
+    const apolloState = client.extract()
+
+    // SSR for Emotion
+    // https://github.com/emotion-js/emotion/blob/v8.0.12/docs/ssr.md
+    const emotionResult = EmotionServer.extractCritical(content)
 
     const data = { ...route }
     data.children = emotionResult.html
@@ -165,7 +175,8 @@ app.get('*', async (req, res, next) => {
     data.scripts.push(assets.client.js)
     data.app = {
       apiUrl: config.api.clientUrl,
-      emotionIds: emotionResult.ids,
+      __EMOTION_IDS__: emotionResult.ids,
+      __APOLLO_STATE__: apolloState,
     }
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
