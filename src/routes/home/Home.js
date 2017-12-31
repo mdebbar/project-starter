@@ -1,3 +1,4 @@
+// @flow
 /**
  * React Starter Kit (https://www.reactstarterkit.com/)
  *
@@ -10,6 +11,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
+import gql from 'graphql-tag'
+import connectLoaded from 'apollo/connectLoaded'
 import { MAX_CONTENT_WIDTH } from 'components/constants'
 
 const Root = styled.div`
@@ -47,7 +50,23 @@ const NewsDesc = styled.div`
   }
 `
 
-class Home extends React.Component {
+const query = gql`
+  {
+    news {
+      title
+      link
+      content
+    }
+  }
+`
+const config = {
+  props: ({ data: { loading, news } }) => ({
+    loading,
+    news,
+  }),
+}
+
+class Home extends React.Component<any> {
   static propTypes = {
     news: PropTypes.arrayOf(
       PropTypes.shape({
@@ -77,4 +96,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+export default connectLoaded(query, config, Home)

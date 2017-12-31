@@ -29,9 +29,9 @@ function createFetch(fetch: Fetch, { baseUrl, cookie }: Options) {
     mode: baseUrl ? 'cors' : 'same-origin',
     credentials: baseUrl ? 'include' : 'same-origin',
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...(cookie ? { Cookie: cookie } : null),
+      accept: 'application/json',
+      'content-type': 'application/json',
+      ...(cookie ? { cookie } : null),
     },
   }
 

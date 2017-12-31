@@ -13,13 +13,14 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt'
-import expressGraphQL from 'express-graphql'
+import { graphqlExpress } from 'apollo-server-express'
 import jwt from 'jsonwebtoken'
 import fetch from 'node-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import * as EmotionServer from 'emotion-server'
 import PrettyError from 'pretty-error'
+import createApolloClient from './apollo/createClient'
 import App from './components/App'
 import Html from './components/Html'
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage'
@@ -101,7 +102,8 @@ app.get(
 // -----------------------------------------------------------------------------
 app.use(
   '/graphql',
-  expressGraphQL(req => ({
+  bodyParser.json(),
+  graphqlExpress(req => ({
     schema,
     graphiql: __DEV__,
     rootValue: { request: req },
@@ -115,10 +117,16 @@ app.use(
 app.get('*', async (req, res, next) => {
   try {
     const css = new Set()
+    const customFetch = createFetch(fetch, {
+      baseUrl: config.api.serverUrl,
+      cookie: req.headers.cookie,
+    })
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
+      // Apollo client instance.
+      client: createApolloClient({ fetch: customFetch }),
       // Enables critical path CSS rendering
       // https://github.com/kriasoft/isomorphic-style-loader
       insertCss: (...styles) => {
@@ -126,10 +134,7 @@ app.get('*', async (req, res, next) => {
         styles.forEach(style => css.add(style._getCss()))
       },
       // Universal HTTP client
-      fetch: createFetch(fetch, {
-        baseUrl: config.api.serverUrl,
-        cookie: req.headers.cookie,
-      }),
+      fetch: customFetch,
     }
 
     const route = await router.resolve({

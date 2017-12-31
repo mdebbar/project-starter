@@ -9,8 +9,10 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { ApolloClient } from 'apollo-client'
 
 const ContextType = {
+  client: PropTypes.instanceOf(ApolloClient).isRequired,
   // Enables critical path CSS rendering
   // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: PropTypes.func.isRequired,

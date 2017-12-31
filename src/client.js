@@ -14,6 +14,7 @@ import { hydrate as emotionHydrate } from 'react-emotion'
 import deepForceUpdate from 'react-deep-force-update'
 import queryString from 'query-string'
 import { createPath } from 'history/PathUtils'
+import createApolloClient from './apollo/createClient'
 import App from './components/App'
 import createFetch from './createFetch'
 import history from './history'
@@ -22,9 +23,13 @@ import router from './router'
 
 emotionHydrate(window.App.emotionIds)
 
+const customFetch = createFetch(fetch, { baseUrl: window.App.apiUrl })
+
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {
+  // Apollo client instance.
+  client: createApolloClient({ fetch: customFetch }),
   // Enables critical path CSS rendering
   // https://github.com/kriasoft/isomorphic-style-loader
   insertCss: (...styles) => {
@@ -35,9 +40,7 @@ const context = {
     }
   },
   // Universal HTTP client
-  fetch: createFetch(fetch, {
-    baseUrl: window.App.apiUrl,
-  }),
+  fetch: customFetch,
 }
 
 const container = document.getElementById('app')
