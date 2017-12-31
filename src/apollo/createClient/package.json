@@ -1,0 +1,6 @@
+{
+  "name": "createClient",
+  "version": "0.0.0",
+  "main": "./createClient.server.js",
+  "browser": "./createClient.browser.js"
+}

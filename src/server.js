@@ -103,7 +103,6 @@ app.get(
 // -----------------------------------------------------------------------------
 app.use(
   '/graphql',
-  bodyParser.json(),
   graphqlExpress(req => ({
     schema,
     graphiql: __DEV__,
@@ -118,12 +117,7 @@ app.use(
 app.get('*', async (req, res, next) => {
   try {
     const css = new Set()
-    const customFetch = createFetch(fetch, {
-      baseUrl: config.api.serverUrl,
-      cookie: req.headers.cookie,
-    })
-
-    const client = createApolloClient({ ssrMode: true, fetch: customFetch })
+    const client = createApolloClient({ schema })
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
@@ -137,7 +131,10 @@ app.get('*', async (req, res, next) => {
         styles.forEach(style => css.add(style._getCss()))
       },
       // Universal HTTP client
-      fetch: customFetch,
+      fetch: createFetch(fetch, {
+        baseUrl: config.api.serverUrl,
+        cookie: req.headers.cookie,
+      }),
     }
 
     const route = await router.resolve({
