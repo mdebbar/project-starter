@@ -8,6 +8,9 @@
   "[css]": {
     "editor.formatOnSave": true
   },
+  "[graphql]": {
+    "editor.formatOnSave": true
+  },
   "editor.rulers": [80],
   "files.watcherExclude": {
     "**/.git/objects/**": true,

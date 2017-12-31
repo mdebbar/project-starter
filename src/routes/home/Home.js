@@ -11,8 +11,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'react-emotion'
-import gql from 'graphql-tag'
 import connectLoaded from 'apollo/connectLoaded'
+import News from 'apollo/queries/News.gql'
 import { MAX_CONTENT_WIDTH } from 'components/constants'
 
 const Root = styled.div`
@@ -50,15 +50,6 @@ const NewsDesc = styled.div`
   }
 `
 
-const query = gql`
-  {
-    news {
-      title
-      link
-      content
-    }
-  }
-`
 const config = {
   props: ({ data: { loading, news } }) => ({
     loading,
@@ -96,4 +87,4 @@ class Home extends React.Component<any> {
   }
 }
 
-export default connectLoaded(query, config, Home)
+export default connectLoaded(News, config, Home)
