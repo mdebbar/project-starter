@@ -39,7 +39,7 @@ function createBabelConfig(buildTarget, isDebug) {
       //
       // `autoLabel` is disabled to prevent an issue with emotion-server. Once we
       // upgrade to emotion 9, we can re-enable `autoLabel`.
-      ['emotion', { autoLabel: false, sourceMap: isDebug }],
+      ['emotion', { autoLabel: isDebug, sourceMap: isDebug }],
 
       // class { handleThing = () => { } }
       ['@babel/plugin-proposal-class-properties', { loose: true }],

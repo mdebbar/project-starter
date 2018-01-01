@@ -181,13 +181,6 @@ app.get('*', async (req, res, next) => {
     res.send(`<!doctype html>${html}`)
   } catch (err) {
     next(err)
-  } finally {
-    // // https://github.com/emotion-js/emotion/issues/512
-    // // Uncommenting the next line will fix the issue, but will break keyframes
-    // // and global styles. There are two ways to fix it:
-    // // 1. Disable `autoLabel` in the emotion babel plugin.
-    // // 2. Upgrade to emotion 9 when it's ready.
-    // EmotionServer.flush()
   }
 })
 
