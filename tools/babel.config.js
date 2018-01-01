@@ -20,7 +20,9 @@ function createBabelConfig(buildTarget, isDebug) {
           // Only transform modules for cli mode. In web and node modes, webpack
           // will take care of modules.
           modules: buildTarget === 'cli' ? 'commonjs' : false,
-          useBuiltIns: false,
+          // On-demand polyfills.
+          // https://github.com/babel/babel/tree/master/packages/babel-preset-env/#usebuiltins-usage
+          useBuiltIns: 'usage',
           debug: false,
         },
       ],

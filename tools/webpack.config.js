@@ -278,7 +278,7 @@ const clientConfig = {
   target: 'web',
 
   entry: {
-    client: ['@babel/polyfill', './src/client.js'],
+    client: ['./src/client.js'],
   },
 
   module: {
@@ -380,7 +380,7 @@ const serverConfig = {
   target: 'node',
 
   entry: {
-    server: ['@babel/polyfill', './src/server.js'],
+    server: ['./src/server.js'],
   },
 
   output: {
