@@ -12,6 +12,7 @@ import path from 'path'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
+import morgan from 'morgan'
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt'
 import { graphqlExpress } from 'apollo-server-express'
 import jwt from 'jsonwebtoken'
@@ -50,6 +51,7 @@ app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'tiny' : 'dev'))
 
 //
 // Authentication
