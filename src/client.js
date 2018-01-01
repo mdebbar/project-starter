@@ -7,7 +7,6 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import 'whatwg-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { hydrate as emotionHydrate } from 'react-emotion'
