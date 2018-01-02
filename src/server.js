@@ -142,22 +142,7 @@ app.get('*', async (req, res, next) => {
       return
     }
 
-    // SSR for Apollo Client
-    // https://www.apollographql.com/docs/react/recipes/server-side-rendering.html
-    const content = await renderToStringWithData(
-      <App context={context}>{route.component}</App>,
-    )
-    const apolloState = client.extract()
-
-    // SSR for Emotion
-    // https://github.com/emotion-js/emotion/blob/v8.0.12/docs/ssr.md
-    const emotionResult = EmotionServer.extractCritical(content)
-
     const data = { ...route }
-    data.children = emotionResult.html
-    data.styles = [
-      { id: 'emotion', cssText: emotionResult.css }, // Emotion styles.
-    ]
 
     // Stylesheets
     data.stylesheets = []
@@ -182,13 +167,12 @@ app.get('*', async (req, res, next) => {
     }
     data.scripts.push(assets.client.js)
 
-    data.app = {
-      apiUrl: config.api.clientUrl,
-      __EMOTION_IDS__: emotionResult.ids,
-      __APOLLO_STATE__: apolloState,
-    }
+    const html = await renderPage(
+      <App context={context}>{route.component}</App>,
+      client,
+      data,
+    )
 
-    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
     res.status(route.status || 200)
     res.send(`<!doctype html>${html}`)
   } catch (err) {
@@ -204,16 +188,49 @@ pe.skipNodeFiles()
 pe.skipPackage('express')
 
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
   console.error(pe.render(err))
-  const html = ReactDOM.renderToStaticMarkup(
-    <Html title="Internal Server Error" description={err.message}>
-      {ReactDOM.renderToString(<ErrorPage error={err} />)}
-    </Html>,
-  )
+  const html = await renderPage(<ErrorPage error={err} />, null, {
+    title: 'Internal Server Error',
+    description: err.message,
+  })
   res.status(err.status || 500)
   res.send(`<!doctype html>${html}`)
 })
+
+async function renderPage(element, client, data) {
+  let content
+  let apolloState = {}
+
+  if (client) {
+    // SSR for Apollo Client
+    // https://www.apollographql.com/docs/react/recipes/server-side-rendering.html
+    content = await renderToStringWithData(element)
+    apolloState = client.extract()
+  } else {
+    content = ReactDOM.renderToString(element)
+  }
+
+  // SSR for Emotion
+  // https://github.com/emotion-js/emotion/blob/v8.0.12/docs/ssr.md
+  const emotionResult = EmotionServer.extractCritical(content)
+
+  // Critical styles.
+  data.styles = [
+    { id: 'emotion', cssText: emotionResult.css }, // Emotion styles.
+  ]
+
+  // Serialize some data for client side consumption.
+  data.app = {
+    apiUrl: config.api.clientUrl,
+    __EMOTION_IDS__: emotionResult.ids,
+    __APOLLO_STATE__: apolloState,
+  }
+
+  return ReactDOM.renderToStaticMarkup(
+    <Html {...data}>{emotionResult.html}</Html>,
+  )
+}
 
 //
 // Launch the server
