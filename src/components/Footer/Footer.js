@@ -8,36 +8,61 @@
  */
 
 import React from 'react'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import s from './Footer.css'
+import styled, { css } from 'react-emotion'
 import Link from '../Link'
 
-class Footer extends React.Component {
+const Root = styled.div`
+  background: #333;
+  color: #fff;
+`
+const Container = styled.div`
+  margin: 0 auto;
+  padding: 20px 15px;
+  max-width: 1000px;
+  text-align: center;
+`
+const textAndLink = css`
+  padding: 2px 5px;
+  font-size: 1em;
+`
+const Text = styled.span`
+  ${textAndLink};
+  color: rgba(255, 255, 255, 0.5);
+`
+const StyledLink = styled(Link)`
+  ${textAndLink};
+
+  &,
+  &:active,
+  &:visited {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+`
+const Spacer = styled.span`
+  color: rgba(255, 255, 255, 0.3);
+`
+
+export default class Footer extends React.Component {
   render() {
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <span className={s.text}>© Your Company</span>
-          <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/">
-            Home
-          </Link>
-          <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/admin">
-            Admin
-          </Link>
-          <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/privacy">
-            Privacy
-          </Link>
-          <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/not-found">
-            Not Found
-          </Link>
-        </div>
-      </div>
+      <Root>
+        <Container>
+          <Text>© Your Company</Text>
+          <Spacer>·</Spacer>
+          <StyledLink to="/">Home</StyledLink>
+          <Spacer>·</Spacer>
+          <StyledLink to="/admin">Admin</StyledLink>
+          <Spacer>·</Spacer>
+          <StyledLink to="/privacy">Privacy</StyledLink>
+          <Spacer>·</Spacer>
+          <StyledLink to="/not-found">Not Found</StyledLink>
+        </Container>
+      </Root>
     )
   }
 }
-
-export default withStyles(s)(Footer)

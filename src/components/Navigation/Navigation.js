@@ -8,32 +8,55 @@
  */
 
 import React from 'react'
-import cx from 'classnames'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import s from './Navigation.css'
+import styled from 'react-emotion'
 import Link from '../Link'
 
-class Navigation extends React.Component {
+const Root = styled.div`
+  float: right;
+  margin: 6px 0 0;
+`
+const StyledLink = styled(Link)`
+  display: inline-block;
+  padding: 3px 8px;
+  text-decoration: none;
+  font-size: 1.125em; /* ~18px */
+
+  &,
+  &:active,
+  &:visited {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+`
+const HighlightedLink = styled(StyledLink)`
+  margin-right: 8px;
+  margin-left: 8px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  color: #fff;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+`
+const Spacer = styled.span`
+  color: rgba(255, 255, 255, 0.3);
+`
+
+export default class Navigation extends React.Component {
   render() {
     return (
-      <div className={s.root} role="navigation">
-        <Link className={s.link} to="/about">
-          About
-        </Link>
-        <Link className={s.link} to="/contact">
-          Contact
-        </Link>
-        <span className={s.spacer}> | </span>
-        <Link className={s.link} to="/login">
-          Log in
-        </Link>
-        <span className={s.spacer}>or</span>
-        <Link className={cx(s.link, s.highlight)} to="/register">
-          Sign up
-        </Link>
-      </div>
+      <Root role="navigation">
+        <StyledLink to="/about">About</StyledLink>
+        <StyledLink to="/contact">Contact</StyledLink>
+        <Spacer> | </Spacer>
+        <StyledLink to="/login">Log in</StyledLink>
+        <Spacer>or</Spacer>
+        <HighlightedLink to="/register">Sign up</HighlightedLink>
+      </Root>
     )
   }
 }
-
-export default withStyles(s)(Navigation)

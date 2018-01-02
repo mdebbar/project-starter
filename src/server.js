@@ -25,8 +25,7 @@ import { renderToStringWithData } from 'react-apollo'
 import createApolloClient from './apollo/createClient'
 import App from './components/App'
 import Html from './components/Html'
-import { ErrorPageWithoutStyle } from './routes/error/ErrorPage'
-import errorPageStyle from './routes/error/ErrorPage.css'
+import ErrorPage from './routes/error/ErrorPage'
 import createFetch from './createFetch'
 import passport from './passport'
 import router from './router'
@@ -118,7 +117,6 @@ app.use(
 // -----------------------------------------------------------------------------
 app.get('*', async (req, res, next) => {
   try {
-    const css = new Set()
     const client = createApolloClient({ schema })
 
     // Global (context) variables that can be easily accessed from any React component
@@ -126,12 +124,6 @@ app.get('*', async (req, res, next) => {
     const context = {
       // Apollo client instance.
       client,
-      // Enables critical path CSS rendering
-      // https://github.com/kriasoft/isomorphic-style-loader
-      insertCss: (...styles) => {
-        // eslint-disable-next-line no-underscore-dangle
-        styles.forEach(style => css.add(style._getCss()))
-      },
       // Universal HTTP client
       fetch: createFetch(fetch, {
         baseUrl: config.api.serverUrl,
@@ -164,14 +156,32 @@ app.get('*', async (req, res, next) => {
     const data = { ...route }
     data.children = emotionResult.html
     data.styles = [
-      { id: 'css', cssText: [...css].join('') }, // Isomorphic styles
       { id: 'emotion', cssText: emotionResult.css }, // Emotion styles.
     ]
+
+    // Stylesheets
+    data.stylesheets = []
+    if (assets.vendor.css) {
+      data.stylesheets.push(assets.vendor.css)
+    }
+    if (route.chunks) {
+      route.chunks.forEach(chunk => {
+        if (assets[chunk].css) {
+          data.stylesheets.push(assets[chunk].css)
+        }
+      })
+    }
+    if (assets.client.css) {
+      data.stylesheets.push(assets.client.css)
+    }
+
+    // JavaScripts
     data.scripts = [assets.vendor.js]
     if (route.chunks) {
       data.scripts.push(...route.chunks.map(chunk => assets[chunk].js))
     }
     data.scripts.push(assets.client.js)
+
     data.app = {
       apiUrl: config.api.clientUrl,
       __EMOTION_IDS__: emotionResult.ids,
@@ -197,12 +207,8 @@ pe.skipPackage('express')
 app.use((err, req, res, next) => {
   console.error(pe.render(err))
   const html = ReactDOM.renderToStaticMarkup(
-    <Html
-      title="Internal Server Error"
-      description={err.message}
-      styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
-    >
-      {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
+    <Html title="Internal Server Error" description={err.message}>
+      {ReactDOM.renderToString(<ErrorPage error={err} />)}
     </Html>,
   )
   res.status(err.status || 500)

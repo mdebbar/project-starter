@@ -9,24 +9,33 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import s from './NotFound.css'
+import styled from 'react-emotion'
+import { MAX_CONTENT_WIDTH } from 'components/constants'
 
-class NotFound extends React.Component {
+const Root = styled.div`
+  padding-left: 20px;
+  padding-right: 20px;
+`
+
+const Container = styled.div`
+  margin: 0 auto;
+  padding: 0 0 40px;
+  max-width: ${MAX_CONTENT_WIDTH}px;
+`
+
+export default class NotFound extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
   }
 
   render() {
     return (
-      <div className={s.root}>
-        <div className={s.container}>
+      <Root>
+        <Container>
           <h1>{this.props.title}</h1>
           <p>Sorry, the page you were trying to view does not exist.</p>
-        </div>
-      </div>
+        </Container>
+      </Root>
     )
   }
 }
-
-export default withStyles(s)(NotFound)

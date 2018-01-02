@@ -8,31 +8,51 @@
  */
 
 import React from 'react'
-import withStyles from 'isomorphic-style-loader/lib/withStyles'
-import s from './Feedback.css'
+import styled from 'react-emotion'
 
-class Feedback extends React.Component {
+const Root = styled.div`
+  background: #f5f5f5;
+  color: #333;
+`
+const Container = styled.div`
+  margin: 0 auto;
+  padding: 20px 8px;
+  max-width: 1000px;
+  text-align: center;
+  font-size: 1.5em; /* ~24px */
+`
+const Link = styled.a`
+  &,
+  &:active,
+  &:hover,
+  &:visited {
+    color: #333;
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+const Spacer = styled.span`
+  padding-right: 15px;
+  padding-left: 15px;
+`
+
+export default class Feedback extends React.Component {
   render() {
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <a
-            className={s.link}
-            href="https://gitter.im/kriasoft/react-starter-kit"
-          >
+      <Root>
+        <Container>
+          <Link href="https://gitter.im/kriasoft/react-starter-kit">
             Ask a question
-          </a>
-          <span className={s.spacer}>|</span>
-          <a
-            className={s.link}
-            href="https://github.com/kriasoft/react-starter-kit/issues/new"
-          >
+          </Link>
+          <Spacer>|</Spacer>
+          <Link href="https://github.com/kriasoft/react-starter-kit/issues/new">
             Report an issue
-          </a>
-        </div>
-      </div>
+          </Link>
+        </Container>
+      </Root>
     )
   }
 }
-
-export default withStyles(s)(Feedback)

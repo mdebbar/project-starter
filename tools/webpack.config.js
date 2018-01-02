@@ -13,6 +13,7 @@ import AssetsPlugin from 'assets-webpack-plugin'
 import nodeExternals from 'webpack-node-externals'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import DashboardPlugin from 'webpack-dashboard/plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import overrideRules from './lib/overrideRules'
 import { createBabelConfig } from './babel.config'
 
@@ -95,37 +96,11 @@ const config = {
       // Rules for Style Sheets
       {
         test: reStyle,
-        rules: [
-          // Convert CSS into JS module
+        use: ExtractTextPlugin.extract([
           {
-            issuer: { not: [reStyle] },
-            use: 'isomorphic-style-loader',
-          },
-
-          // Process external/third-party styles
-          {
-            exclude: path.resolve(__dirname, '../src'),
             loader: 'css-loader',
             options: {
               sourceMap: isDebug,
-              minimize: isDebug ? false : minimizeCssOptions,
-            },
-          },
-
-          // Process internal/project styles (from src folder)
-          {
-            include: path.resolve(__dirname, '../src'),
-            loader: 'css-loader',
-            options: {
-              // CSS Loader https://github.com/webpack/css-loader
-              importLoaders: 1,
-              sourceMap: isDebug,
-              // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
-              localIdentName: isDebug
-                ? '[name]-[local]-[hash:base64:5]'
-                : '[hash:base64:5]',
-              // CSS Nano http://cssnano.co/
               minimize: isDebug ? false : minimizeCssOptions,
             },
           },
@@ -139,23 +114,7 @@ const config = {
               },
             },
           },
-
-          // Compile Less to CSS
-          // https://github.com/webpack-contrib/less-loader
-          // Install dependencies before uncommenting: yarn add --dev less-loader less
-          // {
-          //   test: /\.less$/,
-          //   loader: 'less-loader',
-          // },
-
-          // Compile Sass to CSS
-          // https://github.com/webpack-contrib/sass-loader
-          // Install dependencies before uncommenting: yarn add --dev sass-loader node-sass
-          // {
-          //   test: /\.(scss|sass)$/,
-          //   loader: 'sass-loader',
-          // },
-        ],
+        ]),
       },
 
       // Rules for images
@@ -262,6 +221,13 @@ const config = {
     version: isVerbose,
   },
 
+  plugins: [
+    new ExtractTextPlugin({
+      filename: isDebug ? '[name].css' : '[name].[chunkhash:8].css',
+      allChunks: true,
+    }),
+  ],
+
   // Choose a developer tool to enhance debugging
   // https://webpack.js.org/configuration/devtool/#devtool
   devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
@@ -300,6 +266,8 @@ const clientConfig = {
   },
 
   plugins: [
+    ...config.plugins,
+
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
@@ -439,6 +407,8 @@ const serverConfig = {
   ],
 
   plugins: [
+    ...config.plugins,
+
     // Define free variables
     // https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({

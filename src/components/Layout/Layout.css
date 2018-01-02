@@ -7,14 +7,6 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-@import '../variables.css';
-
-/*
- * normalize.css is imported in JS file.
- * If you import external CSS file from your internal CSS
- * then it will be inlined and processed with CSS modules.
- */
-
 /*
  * Base styles
  * ========================================================================== */
@@ -23,7 +15,7 @@ html {
   color: #222;
   font-weight: 100;
   font-size: 1em; /* ~16px; */
-  font-family: var(--font-family-base);
+  font-family: 'Segoe UI', 'HelveticaNeue-Light', sans-serif;
   line-height: 1.375; /* ~22px */
 }
 

@@ -40,25 +40,25 @@ To help you on your way RSK comes with the following
 you can use as a starting point:
 
 ```js
-import React from 'react';
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
-import App from '../App';
-import Layout from './Layout';
+import React from 'react'
+import { expect } from 'chai'
+import { shallow } from 'enzyme'
+import App from '../App'
+import Layout from './Layout'
 
 describe('Layout', () => {
   it('renders children correctly', () => {
     const wrapper = shallow(
-      <App context={{ insertCss: () => {} }}>
+      <App context={{ fetch: () => {} }}>
         <Layout>
           <div className="child" />
         </Layout>
       </App>,
-    );
+    )
 
-    expect(wrapper.contains(<div className="child" />)).to.be.true;
-  });
-});
+    expect(wrapper.contains(<div className="child" />)).to.be.true
+  })
+})
 ```
 
 ### React-intl exampleß
@@ -69,10 +69,10 @@ example below:
 The example below example is a drop-in test for the RSK `Header` component:
 
 ```js
-import React from 'react';
-import Header from './Header';
-import IntlProvider from 'react-intl';
-import Navigation from '../../components/Navigation';
+import React from 'react'
+import Header from './Header'
+import IntlProvider from 'react-intl'
+import Navigation from '../../components/Navigation'
 
 describe('A test suite for <Header />', () => {
   it('should contain a <Navigation/> component', () => {
@@ -81,11 +81,11 @@ describe('A test suite for <Header />', () => {
         <IntlProvider locale="en">
           <Header />
         </IntlProvider>,
-      );
-      expect(wrapper.find(Navigation)).to.have.length(1);
-    });
-  });
-});
+      )
+      expect(wrapper.find(Navigation)).to.have.length(1)
+    })
+  })
+})
 ```
 
 Please note that NOT using IntlProvider will produce the following error:
