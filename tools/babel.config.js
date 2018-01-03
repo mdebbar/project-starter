@@ -38,9 +38,6 @@ function createBabelConfig(buildTarget, isDebug) {
     plugins: [
       // Emotion
       // https://github.com/emotion-js/emotion/tree/master/packages/babel-plugin-emotion
-      //
-      // `autoLabel` is disabled to prevent an issue with emotion-server. Once we
-      // upgrade to emotion 9, we can re-enable `autoLabel`.
       ['emotion', { autoLabel: isDebug, sourceMap: isDebug }],
 
       // class { handleThing = () => { } }
@@ -53,6 +50,10 @@ function createBabelConfig(buildTarget, isDebug) {
 
       // Adds syntax support for import()
       '@babel/plugin-syntax-dynamic-import',
+
+      // Cherry-pick Lodash and Semantic-ui modules.
+      // https://github.com/lodash/babel-plugin-lodash
+      ['lodash', { id: ['lodash', 'semantic-ui-react'] }],
 
       // Treat React JSX elements as value types and hoist them to the highest scope
       // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements

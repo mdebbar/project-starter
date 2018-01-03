@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import { Button, Icon } from 'semantic-ui-react'
 import Layout from 'components/Layout'
 import Page from 'components/Page'
 import about from './about.md'
@@ -18,6 +19,9 @@ function action() {
     title: about.title,
     component: (
       <Layout>
+        <Button>
+          <Icon name="home" /> Click now?
+        </Button>
         <Page {...about} />
       </Layout>
     ),

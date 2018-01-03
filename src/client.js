@@ -7,6 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+import 'semantic-ui-css/semantic.min.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { hydrate as emotionHydrate } from 'react-emotion'
