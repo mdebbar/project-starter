@@ -100,8 +100,12 @@ const config = {
           {
             loader: 'css-loader',
             options: {
+              modules: true,
               sourceMap: isDebug,
               minimize: isDebug ? false : minimizeCssOptions,
+              localIdentName: isDebug
+                ? '[name]--[local]--[hash:base64:8]'
+                : '[hash:8]',
             },
           },
 
@@ -402,7 +406,7 @@ const serverConfig = {
   externals: [
     './assets.json',
     nodeExternals({
-      whitelist: [reStyle, reImage],
+      whitelist: [reStyle, reImage, /^react-toolbox/, /^normalize.css/],
     }),
   ],
 

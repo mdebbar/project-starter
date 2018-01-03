@@ -8,6 +8,8 @@
  */
 
 import React from 'react'
+import { AppBar } from 'react-toolbox/lib/app_bar'
+import { Button } from 'react-toolbox/lib/button'
 import Layout from 'components/Layout'
 import Page from 'components/Page'
 import about from './about.md'
@@ -17,9 +19,17 @@ function action() {
     chunks: ['about'],
     title: about.title,
     component: (
-      <Layout>
-        <Page {...about} />
-      </Layout>
+      <>
+        <AppBar
+          title="Trying the toolbox"
+          leftIcon="account_circle"
+          rightIcon="menu"
+        />
+        <Layout>
+          <Button>About me</Button>
+          <Page {...about} />
+        </Layout>
+      </>
     ),
   }
 }

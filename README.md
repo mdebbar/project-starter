@@ -11,4 +11,5 @@ _Based on [React Starter Kit](https://github.com/kriasoft/react-starter-kit)._
 * [Emotion](https://emotion.sh/)
 * Async/await
 * [Sequelize](http://docs.sequelizejs.com/)
+* [React Toolbox](http://react-toolbox.io/)
 * Static pages with markdown
