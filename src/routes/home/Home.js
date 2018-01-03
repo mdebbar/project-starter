@@ -11,6 +11,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { propType as graphqlType } from 'graphql-anywhere'
+import Button from 'material-ui/Button'
 import connectLoaded from 'apollo/connectLoaded'
 import FeedPosts from 'apollo/queries/FeedPosts.gql'
 import { MAX_CONTENT_WIDTH } from 'components/constants'
@@ -36,6 +37,9 @@ class Home extends React.Component<any> {
       <Root>
         <Container>
           <h1>News Feed</h1>
+          <Button raised color="primary">
+            Click Me or anything!
+          </Button>
           {this.props.data.posts.map(post => (
             <Post key={post.id} post={post} />
           ))}

@@ -21,8 +21,17 @@ import fetch from 'node-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import * as EmotionServer from 'emotion-server'
+import { create } from 'jss'
+import preset from 'jss-preset-default'
+import JssProvider from 'react-jss/lib/JssProvider'
+import { SheetsRegistry } from 'react-jss/lib/jss'
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  createGenerateClassName,
+} from 'material-ui/styles'
 import PrettyError from 'pretty-error'
-import { renderToStringWithData } from 'react-apollo'
+import { getDataFromTree } from 'react-apollo'
 import createApolloClient from './apollo/createClient'
 import App from './components/App'
 import Html from './components/Html'
@@ -163,17 +172,18 @@ app.use(async (err, req, res, next) => {
 })
 
 async function renderPage(element, client, data) {
-  let content
   let apolloState = {}
+
+  const jssSheetsRegistry = new SheetsRegistry()
+  element = wrapElementForJSS(element, jssSheetsRegistry)
 
   if (client) {
     // SSR for Apollo Client
     // https://www.apollographql.com/docs/react/recipes/server-side-rendering.html
-    content = await renderToStringWithData(element)
+    await getDataFromTree(element)
     apolloState = client.extract()
-  } else {
-    content = ReactDOM.renderToString(element)
   }
+  const content = ReactDOM.renderToString(element)
 
   // SSR for Emotion
   // https://github.com/emotion-js/emotion/blob/v8.0.12/docs/ssr.md
@@ -181,7 +191,10 @@ async function renderPage(element, client, data) {
 
   // Critical styles.
   data.styles = [
-    { id: 'emotion', cssText: emotionResult.css }, // Emotion styles.
+    // Emotion styles.
+    { id: 'emotion', cssText: emotionResult.css },
+    // JSS styles (for material-ui).
+    { id: 'jss-mui', cssText: jssSheetsRegistry.toString() },
   ]
 
   // Serialize some data for client side consumption.
@@ -193,6 +206,25 @@ async function renderPage(element, client, data) {
 
   return ReactDOM.renderToStaticMarkup(
     <Html {...data}>{emotionResult.html}</Html>,
+  )
+}
+
+function wrapElementForJSS(element, sheetsRegistry) {
+  // SSR for Material-ui/JSS
+  // https://github.com/cssinjs/jss/blob/master/docs/ssr.md
+  const jss = create(preset())
+  const muiTheme = createMuiTheme()
+  const generateClassName = createGenerateClassName()
+  return (
+    <JssProvider
+      jss={jss}
+      registry={sheetsRegistry}
+      generateClassName={generateClassName}
+    >
+      <MuiThemeProvider theme={muiTheme} sheetsManager={new Map()}>
+        {element}
+      </MuiThemeProvider>
+    </JssProvider>
   )
 }
 

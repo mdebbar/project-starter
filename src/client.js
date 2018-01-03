@@ -88,7 +88,7 @@ async function onLocationChange(location, action) {
       container,
       () => {
         if (isInitialRender) {
-          const elem = document.getElementById('css')
+          const elem = document.getElementById('jss-mui')
           if (elem) elem.parentNode.removeChild(elem)
           return
         }

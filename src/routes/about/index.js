@@ -8,6 +8,8 @@
  */
 
 import React from 'react'
+import Button from 'material-ui/Button'
+import Input from 'material-ui/Input'
 import Layout from 'components/Layout'
 import Page from 'components/Page'
 import about from './about.md'
@@ -18,6 +20,8 @@ function action() {
     title: about.title,
     component: (
       <Layout>
+        <Input />
+        <Button>Now!</Button>
         <Page {...about} />
       </Layout>
     ),
