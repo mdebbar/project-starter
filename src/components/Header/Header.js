@@ -9,6 +9,7 @@
 
 import React from 'react'
 import styled from 'react-emotion'
+import { MAX_CONTENT_WIDTH } from 'components/constants'
 import Link from '../Link'
 import Navigation from '../Navigation'
 import logoUrl from './logo-small.png'
@@ -22,7 +23,7 @@ const Root = styled.div`
 const Container = styled.div`
   margin: 0 auto;
   padding: 20px 0;
-  max-width: 1000px;
+  max-width: ${MAX_CONTENT_WIDTH}px;
 `
 
 const BrandLink = styled(Link)`

@@ -9,6 +9,7 @@
 
 import React from 'react'
 import styled, { css } from 'react-emotion'
+import { MAX_CONTENT_WIDTH } from 'components/constants'
 import Link from '../Link'
 
 const Root = styled.div`
@@ -18,7 +19,7 @@ const Root = styled.div`
 const Container = styled.div`
   margin: 0 auto;
   padding: 20px 15px;
-  max-width: 1000px;
+  max-width: ${MAX_CONTENT_WIDTH}px;
   text-align: center;
 `
 const textAndLink = css`
