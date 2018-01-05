@@ -11,7 +11,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // external-global styles must be imported in your JS.
-import 'normalize.css'
 import './Layout.css'
 import Header from 'components/Header'
 import Feedback from 'components/Feedback'

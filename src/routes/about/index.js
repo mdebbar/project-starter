@@ -8,6 +8,7 @@
  */
 
 import React from 'react'
+import { Button } from 'antd'
 import Layout from 'components/Layout'
 import Page from 'components/Page'
 import about from './about.md'
@@ -18,6 +19,7 @@ function action() {
     title: about.title,
     component: (
       <Layout>
+        <Button type="primary">Click me click me</Button>
         <Page {...about} />
       </Layout>
     ),

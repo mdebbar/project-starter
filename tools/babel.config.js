@@ -7,6 +7,7 @@ module.exports = { createBabelConfig }
  * @param {boolean} isDebug - true when building for dev mode.
  */
 function createBabelConfig(buildTarget, isDebug) {
+  const isClient = buildTarget === 'web'
   // Babel configuration
   // https://babeljs.io/docs/usage/api/
   const config = {
@@ -53,6 +54,10 @@ function createBabelConfig(buildTarget, isDebug) {
 
       // Adds syntax support for import()
       '@babel/plugin-syntax-dynamic-import',
+
+      // Transform antd imports to include css assets.
+      // https://github.com/ant-design/babel-plugin-import
+      ...(isClient ? [['import', { libraryName: 'antd', style: 'css' }]] : []),
 
       // Treat React JSX elements as value types and hoist them to the highest scope
       // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-constant-elements
