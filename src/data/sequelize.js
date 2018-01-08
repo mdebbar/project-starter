@@ -10,10 +10,15 @@
 import Sequelize from 'sequelize'
 import config from '../config'
 
-const sequelize = new Sequelize(config.databaseUrl, {
-  define: {
-    freezeTableName: true,
+export default new Sequelize(
+  config.db.name,
+  config.db.username,
+  config.db.password,
+  {
+    ...config.db,
+    define: {
+      // http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-init
+      freezeTableName: true,
+    },
   },
-})
-
-export default sequelize
+)

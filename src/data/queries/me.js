@@ -7,17 +7,13 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import UserType from '../types/UserType'
+import UserType from 'data/types/UserType'
+import { User } from 'data/models'
 
 const me = {
   type: UserType,
-  resolve({ request }) {
-    return (
-      request.user && {
-        id: request.user.id,
-        email: request.user.email,
-      }
-    )
+  resolve() {
+    return User.findOne()
   },
 }
 

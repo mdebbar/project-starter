@@ -28,6 +28,19 @@ module.exports = {
 
   // Database
   databaseUrl: process.env.DATABASE_URL || 'sqlite:database.sqlite',
+  db: {
+    name: process.env.DB_NAME || 'dev',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || '3306',
+    username: process.env.DB_USERNAME || 'root',
+    password: process.env.DB_PASSWORD || '',
+
+    benchmark: true,
+    dialect: 'mysql',
+    dialectOptions: {
+      charset: 'utf8mb4',
+    },
+  },
 
   // Web analytics
   analytics: {

@@ -10,28 +10,27 @@
 import DataType from 'sequelize'
 import Model from '../sequelize'
 
-const User = Model.define(
-  'User',
-  {
-    id: {
-      type: DataType.UUID,
-      defaultValue: DataType.UUIDV1,
-      primaryKey: true,
-    },
-
-    email: {
-      type: DataType.STRING(255),
-      validate: { isEmail: true },
-    },
-
-    emailConfirmed: {
-      type: DataType.BOOLEAN,
-      defaultValue: false,
-    },
+const User = Model.define('User', {
+  id: {
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV1,
+    primaryKey: true,
   },
-  {
-    indexes: [{ fields: ['email'] }],
+
+  email: {
+    type: DataType.STRING(255),
+    validate: { isEmail: true },
   },
-)
+
+  emailConfirmed: {
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  },
+})
+
+User.associate = models => {
+  User.hasMany(models.Post, { as: 'posts', onDelete: 'cascade' })
+  // User.hasMany(models.Comment, { as: 'comments', onDelete: 'cascade' })
+}
 
 export default User

@@ -25,12 +25,10 @@
     "graphql": "^0.12.3",
     "graphql-tag": "^2.6.1",
     "history": "^4.7.2",
-    "jsonwebtoken": "^8.1.0",
     "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
     "node-fetch": "^1.7.3",
     "normalize.css": "^7.0.0",
-    "passport": "^0.4.0",
-    "passport-facebook": "^2.1.1",
     "pretty-error": "^2.1.1",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
@@ -149,6 +147,8 @@
     "render": "babel-node tools/run render",
     "serve": "babel-node tools/run runServer",
     "start": "babel-node tools/run start --silent",
-    "debug": "babel-node --inspect tools/run start --silent"
+    "debug": "babel-node --inspect tools/run start --silent",
+    "db:test-connection": "babel-node tools/run db/test-connection",
+    "db:create": "babel-node tools/run db/create"
   }
 }
