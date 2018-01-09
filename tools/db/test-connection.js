@@ -1,5 +1,5 @@
 import sequelize from '../../src/data/sequelize'
-import config from '../../src/config'
+import config from '../../src/data/sequelize.config'
 
 // Test whether we can connect to the db or not.
 export default async function testConnection() {
@@ -9,7 +9,7 @@ export default async function testConnection() {
   } catch (err) {
     console.error('Failed to connect to DB')
     console.error(err)
-    console.info('Database config:', config.db)
+    console.info('Database config:', config)
   } finally {
     sequelize.close()
   }

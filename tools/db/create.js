@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise'
 import config from '../../src/config'
 
-const { host, username, password } = config.db
+const { database, host, username, password } = config.sequelize
 
 export default async function create() {
   const connection = await mysql.createConnection({
@@ -13,7 +13,7 @@ export default async function create() {
 
   try {
     const sql = `
-      CREATE DATABASE IF NOT EXISTS ${config.db.name}
+      CREATE DATABASE IF NOT EXISTS ${database}
       CHARACTER SET utf8mb4
       COLLATE utf8mb4_unicode_ci
     `

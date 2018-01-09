@@ -27,9 +27,9 @@ module.exports = {
   },
 
   // Database
-  databaseUrl: process.env.DATABASE_URL || 'sqlite:database.sqlite',
-  db: {
-    name: process.env.DB_NAME || 'dev',
+  // http://docs.sequelizejs.com/manual/installation/usage.html#options
+  sequelize: {
+    database: process.env.DB_NAME || 'dev',
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || '3306',
     username: process.env.DB_USERNAME || 'root',
@@ -39,6 +39,11 @@ module.exports = {
     dialect: 'mysql',
     dialectOptions: {
       charset: 'utf8mb4',
+    },
+
+    define: {
+      // http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-init
+      freezeTableName: true,
     },
   },
 

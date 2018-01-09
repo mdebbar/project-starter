@@ -1,19 +1,9 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import DataType from 'sequelize'
 import Model from '../sequelize'
 
 const User = Model.define('User', {
   id: {
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV1,
+    type: DataType.INTEGER,
     primaryKey: true,
   },
 
@@ -29,8 +19,8 @@ const User = Model.define('User', {
 })
 
 User.associate = models => {
-  User.hasMany(models.Post, { as: 'posts', onDelete: 'cascade' })
-  // User.hasMany(models.Comment, { as: 'comments', onDelete: 'cascade' })
+  User.hasMany(models.Post, { as: 'posts' })
+  User.hasMany(models.Comment, { as: 'comments' })
 }
 
 export default User

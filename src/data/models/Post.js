@@ -8,7 +8,8 @@ const Post = Model.define('Post', {
 })
 
 Post.associate = models => {
-  Post.belongsTo(models.User)
+  Post.belongsTo(models.User, { as: 'user' })
+  Post.hasMany(models.Comment, { as: 'comments' })
 }
 
 export default Post

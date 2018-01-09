@@ -37,6 +37,7 @@
     "react-dom": "^16.2.0",
     "react-emotion": "9.0.0-1",
     "sequelize": "^4.29.0",
+    "sequelize-cli": "^3.2.0",
     "serialize-javascript": "^1.3.0",
     "source-map-support": "^0.5.0",
     "sqlite3": "^3.1.13",
@@ -148,7 +149,13 @@
     "serve": "babel-node tools/run runServer",
     "start": "babel-node tools/run start --silent",
     "debug": "babel-node --inspect tools/run start --silent",
+    "console": "babel-node",
+    "sqlz": "babel-node ./node_modules/.bin/sequelize",
     "db:test-connection": "babel-node tools/run db/test-connection",
-    "db:create": "babel-node tools/run db/create"
+    "db:create": "babel-node tools/run db/create",
+    "db:migrate": "yarn sqlz db:migrate",
+    "db:migrate:undo": "yarn sqlz db:migrate:undo",
+    "db:migration:create": "yarn sqlz migration:create",
+    "db:migration:status": "yarn sqlz db:migrate:status"
   }
 }
