@@ -18,6 +18,7 @@
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.5.3",
+    "dataloader-sequelize": "^1.5.6",
     "emotion": "9.0.0-1",
     "emotion-server": "9.0.0-1",
     "express": "^4.16.2",

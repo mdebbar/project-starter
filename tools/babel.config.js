@@ -33,7 +33,7 @@ function createBabelConfig(buildTarget, isDebug) {
 
       // JSX
       // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-      ['@babel/preset-react', { development: isDebug }],
+      ['@babel/preset-react', { development: isDebug, useBuiltIns: true }],
     ],
     plugins: [
       // Emotion
