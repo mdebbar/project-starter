@@ -9,13 +9,15 @@ import connect from './connect'
 
 export default function connectLoaded<TProps>(
   query: DocumentNode,
-  config: OperationOption,
   Component: ComponentType<TProps & ConnectedProps>,
+  config?: OperationOption = {},
 ): ComponentType<TProps & ConnectedProps> {
+  // TODO: Think about enforcing a certain delay before switching from
+  //       the loading state to the rendered state.
   function IntermediateComponent(props: TProps & ConnectedProps) {
     return isLoading(props) ? null : <Component {...props} />
   }
-  return connect(query, config, IntermediateComponent)
+  return connect(query, IntermediateComponent, config)
 }
 
 function isLoading(props) {

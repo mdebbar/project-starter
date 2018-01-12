@@ -1,5 +1,5 @@
 import DataType from 'sequelize'
-import Model from '../sequelize'
+import Model from 'data/sequelize'
 
 const Comment = Model.define('Comment', {
   body: {

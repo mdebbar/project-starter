@@ -10,7 +10,7 @@
 import React from 'react'
 import styled, { css } from 'react-emotion'
 import { MAX_CONTENT_WIDTH } from 'components/constants'
-import Link from '../Link'
+import Link from 'components/Link'
 
 const Root = styled.div`
   background: #333;
@@ -53,13 +53,9 @@ export default class Footer extends React.Component {
     return (
       <Root>
         <Container>
-          <Text>© Your Company</Text>
+          <Text>© Mouad Debbar</Text>
           <Spacer>·</Spacer>
           <StyledLink to="/">Home</StyledLink>
-          <Spacer>·</Spacer>
-          <StyledLink to="/admin">Admin</StyledLink>
-          <Spacer>·</Spacer>
-          <StyledLink to="/privacy">Privacy</StyledLink>
           <Spacer>·</Spacer>
           <StyledLink to="/not-found">Not Found</StyledLink>
         </Container>

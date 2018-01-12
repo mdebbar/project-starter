@@ -9,7 +9,7 @@
 
 import React from 'react'
 import styled from 'react-emotion'
-import Link from '../Link'
+import Link from 'components/Link'
 
 const Root = styled.div`
   float: right;
@@ -31,31 +31,12 @@ const StyledLink = styled(Link)`
     color: rgba(255, 255, 255, 1);
   }
 `
-const HighlightedLink = styled(StyledLink)`
-  margin-right: 8px;
-  margin-left: 8px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.15);
-  color: #fff;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.3);
-  }
-`
-const Spacer = styled.span`
-  color: rgba(255, 255, 255, 0.3);
-`
 
 export default class Navigation extends React.Component {
   render() {
     return (
       <Root role="navigation">
         <StyledLink to="/about">About</StyledLink>
-        <StyledLink to="/contact">Contact</StyledLink>
-        <Spacer> | </Spacer>
-        <StyledLink to="/login">Log in</StyledLink>
-        <Spacer>or</Spacer>
-        <HighlightedLink to="/register">Sign up</HighlightedLink>
       </Root>
     )
   }

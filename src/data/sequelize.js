@@ -9,9 +9,9 @@
 
 import Sequelize from 'sequelize'
 import dataloaderSequelize from 'dataloader-sequelize'
-import config from '../config'
+import config from './sequelize.config'
 
-const sequelize = new Sequelize(config.sequelize)
+const sequelize = new Sequelize(config)
 
 // Batch sql queries using `dataloader`.
 // https://github.com/mickhansen/dataloader-sequelize

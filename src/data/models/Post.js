@@ -1,5 +1,5 @@
 import DataType from 'sequelize'
-import Model from '../sequelize'
+import Model from 'data/sequelize'
 
 const Post = Model.define('Post', {
   body: {

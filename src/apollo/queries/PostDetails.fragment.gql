@@ -1,0 +1,8 @@
+fragment PostDetails on Post {
+  id
+  body
+  user {
+    id
+    email
+  }
+}

@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise'
-import config from '../../src/config'
+import config from '../../src/data/sequelize.config'
 
-const { database, host, username, password } = config.sequelize
+const { database, host, username, password } = config
 
 export default async function create() {
   const connection = await mysql.createConnection({

@@ -11,8 +11,8 @@ export type ConnectedProps = {
 
 export default function connect<TProps>(
   query: DocumentNode,
-  config: OperationOption,
   Component: ComponentType<TProps & ConnectedProps>,
+  config?: OperationOption = {},
 ): ComponentType<TProps & ConnectedProps> {
   return graphql(query, config)(Component)
 }

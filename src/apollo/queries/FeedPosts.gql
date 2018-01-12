@@ -1,0 +1,7 @@
+#import './PostDetails.fragment.gql'
+
+query Posts {
+  posts {
+    ...PostDetails
+  }
+}

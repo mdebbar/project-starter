@@ -14,7 +14,7 @@ import Home from './Home'
 function action() {
   return {
     chunks: ['home'],
-    title: 'React Starter Kit',
+    title: 'React Project Starter',
     component: (
       <Layout>
         <Home />

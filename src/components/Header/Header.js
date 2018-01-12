@@ -10,8 +10,8 @@
 import React from 'react'
 import styled from 'react-emotion'
 import { MAX_CONTENT_WIDTH } from 'components/constants'
-import Link from '../Link'
-import Navigation from '../Navigation'
+import Link from 'components/Link'
+import Navigation from 'components/Navigation'
 import logoUrl from './logo-small.png'
 import logoUrl2x from './logo-small@2x.png'
 
@@ -69,11 +69,11 @@ export default class Header extends React.Component {
               height="38"
               alt="React"
             />
-            <BrandText>Your Company</BrandText>
+            <BrandText>Mouad Debbar</BrandText>
           </BrandLink>
           <Banner>
             <BannerTitle>React</BannerTitle>
-            <BannerDesc>Complex web apps made easy</BannerDesc>
+            <BannerDesc>Project Starter</BannerDesc>
           </Banner>
         </Container>
       </Root>

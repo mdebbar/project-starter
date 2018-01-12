@@ -45,11 +45,9 @@ export default class Feedback extends React.Component {
     return (
       <Root>
         <Container>
-          <Link href="https://gitter.im/kriasoft/react-starter-kit">
-            Ask a question
-          </Link>
+          <Link href="https://stackoverflow.com">Ask a question</Link>
           <Spacer>|</Spacer>
-          <Link href="https://github.com/kriasoft/react-starter-kit/issues/new">
+          <Link href="https://github.com/mdebbar/project-starter/issues">
             Report an issue
           </Link>
         </Container>

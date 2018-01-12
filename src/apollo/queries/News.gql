@@ -1,7 +1,0 @@
-query News {
-  news {
-    title
-    link
-    content
-  }
-}
