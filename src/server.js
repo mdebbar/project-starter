@@ -33,6 +33,15 @@ import config from './config'
 
 const app = express()
 
+// When running locally, load env variables from .env files.
+// The main file `.env` is committed in the git repo and contains defaults for development.
+// The other `.env.local` can be used locally to override.
+if (process.env.NODE_ENV === 'development') {
+  const { config } = require('dotenv')
+  config({ path: '.env.local' })
+  config({ path: '.env' })
+}
+
 //
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
 // user agent is not known.
