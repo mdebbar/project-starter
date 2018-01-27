@@ -19,10 +19,11 @@ import createFetch from './createFetch'
 import history from './history'
 import { updateMeta } from './DOMUtils'
 import router from './router'
+import config from './config/client'
 
 emotionHydrate(window.App.__EMOTION_IDS__)
 
-const customFetch = createFetch(fetch, { baseUrl: window.App.apiUrl })
+const customFetch = createFetch(fetch, { baseUrl: config.apiUrl })
 
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html

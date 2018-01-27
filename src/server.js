@@ -8,12 +8,14 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+// `loadEnv` has to be the first import so env variables are correctly
+// setup before everything else.
+import './loadEnv'
 import path from 'path'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
-import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import fetch from 'node-fetch'
 import React from 'react'
@@ -29,18 +31,10 @@ import createFetch from './createFetch'
 import router from './router'
 import schema from './data/schema'
 import assets from './assets.json' // eslint-disable-line import/no-unresolved
-import config from './config'
+import serverConfig from './config/server'
+import clientConfig from './config/client'
 
 const app = express()
-
-// When running locally, load env variables from .env files.
-// The main file `.env` is committed in the git repo and contains defaults for development.
-// The other `.env.local` can be used locally to override.
-if (process.env.NODE_ENV === 'development') {
-  const { config } = require('dotenv')
-  config({ path: '.env.local' })
-  config({ path: '.env' })
-}
 
 //
 // Tell any CSS tooling (such as Material UI) to use all vendor prefixes if the
@@ -57,27 +51,6 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'tiny' : 'dev'))
-
-//
-// Authentication
-// -----------------------------------------------------------------------------
-app.use(
-  expressJwt({
-    secret: config.auth.jwt.secret,
-    credentialsRequired: false,
-    getToken: req => req.cookies.id_token,
-  }),
-)
-// Error handler for express-jwt
-app.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
-  if (err instanceof Jwt401Error) {
-    console.error('[express-jwt-error]', req.cookies.id_token)
-    // `clearCookie`, otherwise user can't use web-app until cookie expires
-    res.clearCookie('id_token')
-  }
-  next(err)
-})
 
 if (__DEV__) {
   app.enable('trust proxy')
@@ -117,7 +90,7 @@ app.get('*', async (req, res, next) => {
       client,
       // Universal HTTP client
       fetch: createFetch(fetch, {
-        baseUrl: config.api.serverUrl,
+        baseUrl: serverConfig.apiUrl,
         cookie: req.headers.cookie,
       }),
     }
@@ -213,7 +186,7 @@ async function renderPage(element, client, data) {
 
   // Serialize some data for client side consumption.
   data.app = {
-    apiUrl: config.api.clientUrl,
+    config: clientConfig,
     __EMOTION_IDS__: emotionResult.ids,
     __APOLLO_STATE__: apolloState,
   }
@@ -227,8 +200,10 @@ async function renderPage(element, client, data) {
 // Launch the server
 // -----------------------------------------------------------------------------
 if (!module.hot) {
-  app.listen(config.port, () => {
-    console.info(`The server is running at http://localhost:${config.port}/`)
+  app.listen(serverConfig.port, () => {
+    console.info(
+      `The server is running at http://localhost:${serverConfig.port}/`,
+    )
   })
 }
 
